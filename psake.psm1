@@ -509,15 +509,14 @@ function LoadConfiguration {
         }
     }
 
-    $ymlConfigFilePath = (join-path $configdir "psake.yml")
+    $ymlConfigFilePath = (join-path $configdir $config.yamlConfigFileName)
 
     if (test-path $ymlConfigFilePath -pathType Leaf) {
         try {
             $yamlConfig = Get-Content $ymlConfigFilePath | ConvertFrom-Yaml
-            $tmp = New-Object PSObject -Property $yamlConfig
-            $config = Combine-Objects -First $config -Second $tmp
+            $config.yaml = $yamlConfig
         } catch {
-            throw "Error Loading Configuration from psake.yml: " + $_
+            throw "Error loading configuration from ${config.yamlConfigFileName}: " + $_
         }
     }
 }
@@ -1256,12 +1255,14 @@ $psake.context = new-object system.collections.stack # holds onto the current st
 $psake.run_by_psake_build_tester = $false # indicates that build is being run by psake-BuildTester
 $psake.config_default = new-object psobject -property @{
     buildFileName = "default.ps1";
+    yamlConfigFileName = "psake.yml";
     framework = "4.0";
     taskNameFormat = "Executing {0}";
     verboseError = $false;
     coloredOutput = $true;
     modules = $null;
     moduleScope = "";
+    yaml = $null;
 } # contains default configuration, can be overriden in psake-config.ps1 in directory with psake.psm1 or in directory with current build script
 
 $psake.build_success = $false # indicates that the current build was successful

@@ -3,6 +3,7 @@
 Defaults
 -------------------------------------------------------------------
 $config.buildFileName="default.ps1"
+$config.yamlConfigFileName = "psake.yml";
 $config.framework = "4.0"
 $config.taskNameFormat="Executing {0}"
 $config.verboseError=$false
@@ -19,4 +20,3 @@ Use scriptblock for taskNameFormat
 -------------------------------------------------------------------
 $config.taskNameFormat= { param($taskName) "Executing $taskName at $(get-date)" }
 #>
-$config.framework = "5.0"
